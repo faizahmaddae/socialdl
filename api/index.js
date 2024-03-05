@@ -5,7 +5,22 @@ const ApiResponse = require('../ApiResponse');
 
 const youtubeService = require('../services/youtube');
 // const instagramService = require('../services/instagram');
-// const tiktokService = require('../services/tiktok');
+const tiktokService = require('../services/tiktok');
+
+router.get('/tiktok/', async (req, res) => {
+  try {
+    const videoUrl = req.query.url;
+    if (!videoUrl) {
+      return res.status(400).send('URL is required');
+    }
+    const videoInfo = await tiktokService.downloadVideo(res, videoUrl);
+  }
+  catch (error) {
+    return ApiResponse.internalServerError(res, "Failed to download video");
+  }
+
+});
+
 
 router.get('/download/', async (req, res) => {
   try {

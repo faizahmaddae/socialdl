@@ -1,35 +1,10 @@
 const axios = require("axios");
 const ApiResponse = require('../ApiResponse');
-const cheerio = require('cheerio');
+const Utils = require('../utils');
 
 
-async function fetchCsrfToken(url) {
-    try {
-      // Make an HTTP GET request to the webpage
-      const response = await axios.get(url);
-      const html = response.data;
-  
-      // Use cheerio to parse the HTML
-      const $ = cheerio.load(html);
-  
-      // Extract the CSRF token from meta tags
-      // Adjust the selector as needed based on the meta tag's name or property
-      const csrfToken = $('meta[name="csrf-token"]').attr('content');
-  
-      if (csrfToken) {
-        console.log('CSRF Token:', csrfToken);
-        return csrfToken;
-      } else {
-        console.error('CSRF Token not found.');
-        return null;
-      }
-    } catch (error) {
-      console.error('Error fetching CSRF Token:', error);
-    }
-  }
-
-const csrfToken = fetchCsrfToken("https://en.y2mate.is/");
-console.log(csrfToken);
+// const csrfToken = Utils.fetchCsrfToken("https://en.y2mate.is/");
+// console.log(csrfToken);
 
 const headers = {
     "Accept": "*/*",
@@ -46,13 +21,12 @@ const headers = {
     // "Sec-Fetch-Site": "cross-site",
     // "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
     // "X-CSRF-TOKEN": csrfToken,
-    "X-Forwarded-For": "73.133.57.109"
+    // "X-Forwarded-For": "73.133.57.109"
+    // "X-Forwarded-For": "127.0.0.1"
 };
 
 async function downloadVideo(res, url) {
-
     const baseUrl = `https://srvcdn1.2convert.me/api/json?url=${url}`;
-
     try {
         const response = await axios.get(baseUrl, { headers });
 
@@ -60,11 +34,8 @@ async function downloadVideo(res, url) {
             const videos = response.data.formats.video
             const audios = response.data.formats.audio
             // const video = videos.find(video => video.quality === "720p");
-            // get last video
             const video = videos[videos.length - 1];
             const hash = video.url;
-            // console.log(videos);
-
             data = {
                 title: response.data.formats.title,
                 video_id: response.data.formats.videoId,
@@ -91,7 +62,8 @@ async function convert(res, hash) {
         if (taskId) {
             try {
                 const taskResponse = await axios.post("https://srvcdn1.2convert.me/api/json/task", { taskId }, { headers });
-                console.log(taskResponse.data);
+                // console.log(taskResponse.data);
+                ip = await Utils.getPublicIP();
                 result.data = {
                     taskId: taskResponse.data.taskId ?? null,
                     status: taskResponse.data.status ?? null,
@@ -101,8 +73,9 @@ async function convert(res, hash) {
                     quality: taskResponse.data.quality ?? null,
                     filesize: taskResponse.data.filesize ?? null,
                     download_url: taskResponse.data.download ?? null,
+                    ip: ip,
                 }
-
+                // result.data = taskResponse.data;
             } catch (error) {
                 console.error("Failed to retrieve task data:", error);
                 return ApiResponse.internalServerError(res, "Failed to retrieve task data");
