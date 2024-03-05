@@ -1,22 +1,51 @@
 const axios = require("axios");
 const ApiResponse = require('../ApiResponse');
+const cheerio = require('cheerio');
 
+
+async function fetchCsrfToken(url) {
+    try {
+      // Make an HTTP GET request to the webpage
+      const response = await axios.get(url);
+      const html = response.data;
+  
+      // Use cheerio to parse the HTML
+      const $ = cheerio.load(html);
+  
+      // Extract the CSRF token from meta tags
+      // Adjust the selector as needed based on the meta tag's name or property
+      const csrfToken = $('meta[name="csrf-token"]').attr('content');
+  
+      if (csrfToken) {
+        console.log('CSRF Token:', csrfToken);
+        return csrfToken;
+      } else {
+        console.error('CSRF Token not found.');
+        return null;
+      }
+    } catch (error) {
+      console.error('Error fetching CSRF Token:', error);
+    }
+  }
+
+const csrfToken = fetchCsrfToken("https://en.y2mate.is/");
+console.log(csrfToken);
 
 const headers = {
     "Accept": "*/*",
     "Accept-Encoding": "gzip, deflate, br, zstd",
     "Accept-Language": "en,fa;q=0.9",
     "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-    "Origin": "null",
+    // "Origin": "null",
     "Referer": "https://en.y2mate.is/",
-    "Sec-Ch-Ua": "\"Chromium\";v=\"122\", \"Not(A:Brand\";v=\"24\", \"Google Chrome\";v=\"122\"",
-    "Sec-Ch-Ua-Mobile": "?0",
-    "Sec-Ch-Ua-Platform": "\"macOS\"",
-    "Sec-Fetch-Dest": "empty",
-    "Sec-Fetch-Mode": "cors",
-    "Sec-Fetch-Site": "cross-site",
+    // "Sec-Ch-Ua": "\"Chromium\";v=\"122\", \"Not(A:Brand\";v=\"24\", \"Google Chrome\";v=\"122\"",
+    // "Sec-Ch-Ua-Mobile": "?0",
+    // "Sec-Ch-Ua-Platform": "\"macOS\"",
+    // "Sec-Fetch-Dest": "empty",
+    // "Sec-Fetch-Mode": "cors",
+    // "Sec-Fetch-Site": "cross-site",
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-    // "X-Csrf-Token": "qEBuLC6C2MIpjZKFrV4oBZJkNknvcY3FHmOLLSMO",
+    // "X-CSRF-TOKEN": csrfToken,
 };
 
 async function downloadVideo(res, url) {
@@ -41,7 +70,7 @@ async function downloadVideo(res, url) {
                 thumbnail: response.data.formats.thumbnail,
                 duration: response.data.formats.duration,
                 videos,
-                audios,
+                // audios,
             }
             return ApiResponse.success(res, null, data);
         }
@@ -56,6 +85,8 @@ async function convert(res, hash) {
     try {
         const postResponse = await axios.post("https://srvcdn1.2convert.me/api/json", { 'hash': hash }, { headers });
         const taskId = postResponse.data.taskId;
+        // sleep for 2 seconds
+        await new Promise(r => setTimeout(r, 2000));
         if (taskId) {
             try {
                 const taskResponse = await axios.post("https://srvcdn1.2convert.me/api/json/task", { taskId }, { headers });
