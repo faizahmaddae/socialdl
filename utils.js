@@ -1,15 +1,71 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
+const e = require('express');
 
 class Utils {
 
+  // detectUrl
+  static detectUrl(url) {
 
+    // let facebookRegex = '^(?:https?:\/\/)?(?:www\.|(?:[a-zA-Z0-9-]+\.)*)(facebook|fb)\.(com|me|watch)\/';
+    // let tiktokRegex = '^(?:https?:\/\/)?(?:www\.|(?:[a-zA-Z0-9-]+\.)*)(tiktok)\.(com)\/';
+    // let instagramRegex = '^(?:https?:\/\/)?(?:www\.|(?:[a-zA-Z0-9-]+\.)*)(instagram)\.(com)\/';
+    // let youtubeRegex = '^(?:https?:\/\/)?(?:www\.|(?:[a-zA-Z0-9-]+\.)*)(youtube)\.(com)\/';
+    // let twitterRegex = '^(?:https?:\/\/)?(?:www\.|(?:[a-zA-Z0-9-]+\.)*)(twitter|x)\.(com)\/';
+    // let twitchRegex = '^(?:https?:\/\/)?(?:www\.|(?:[a-zA-Z0-9-]+\.)*)(twitch)\.(tv)\/';
+
+
+
+    const fbRegex = /(?:https?:\/\/)?(?:www\.|(?:[a-zA-Z0-9-]+\.)*)(facebook|fb)\.(com|me|watch)\//gm;
+    const instaRegex = /(?:https?:\/\/)?(?:www\.|(?:[a-zA-Z0-9-]+\.)*)(instagram)\.(com)\//gm;
+    const tiktokRegex = /(?:https?:\/\/)?(?:www\.|(?:[a-zA-Z0-9-]+\.)*)(tiktok)\.(com)\//gm;
+    const youtubeRegex = /(?:https?:\/\/)?(?:www\.|(?:[a-zA-Z0-9-]+\.)*)(youtube)\.(com)\//gm;
+    const twitterRegex = /(?:https?:\/\/)?(?:www\.|(?:[a-zA-Z0-9-]+\.)*)(twitter|x)\.(com)\//gm;
+    const twitchRegex = /(?:https?:\/\/)?(?:www\.|(?:[a-zA-Z0-9-]+\.)*)(twitch)\.(tv)\//gm;
+    const linkedinRegex = /(?:https?:\/\/)?(?:www\.|(?:[a-zA-Z0-9-]+\.)*)(linkedin)\.(com)\//gm;
+
+
+    try {
+      if (fbRegex.exec(url)) {
+        return 'facebook';
+      }
+      else if (instaRegex.exec(url)) {
+        return 'instagram';
+      }
+      else if (tiktokRegex.exec(url)) {
+        return 'tiktok';
+      }
+      else if (youtubeRegex.exec(url)) {
+        return 'youtube';
+      }
+      else if (twitterRegex.exec(url)) {
+        return 'twitter';
+      }
+      else if (twitchRegex.exec(url)) {
+        return 'twitch';
+      }
+      else if (linkedinRegex.exec(url)) {
+        return 'linkedin';
+      }
+      else {
+        return 'unknown';
+      }
+
+    } catch (error) {
+      console.error('Error detecting URL:', error);
+      return 'unknown';
+    }
+  }
+
+  // sleep
+  static sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 
   static extract(codeSnippet) {
     // Return : "ZSvzZSUzSuzSuzZZizZrvzZxxzZSuzxUzZxrzZxZ",48,"UZuvrSxiz",2,8,12)) or null
     const regex = /"\w+",\d+,"\w+",\d+,\d+,\d+\)\)/;
     const match = codeSnippet.match(regex);
-
     if (match) {
       return match[0];
     } else {
@@ -87,6 +143,11 @@ class Utils {
       // Make an HTTP GET request to the webpage
       const response = await axios.get(url);
       const html = response.data;
+
+      const serverTime = response.headers['date'];
+      const timestamp = new Date(serverTime).getTime();
+
+      console.log('Server Time:', timestamp);
 
       // Use cheerio to parse the HTML
       const $ = cheerio.load(html);
