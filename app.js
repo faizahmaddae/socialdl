@@ -14,7 +14,6 @@ app.set('trust proxy', true);
 app.use('/api', apiRoutes);
 
 
-
 app.get('/', (req, res) => {
   res.send({
     message: 'Welcome to the API server',
