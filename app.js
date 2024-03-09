@@ -25,6 +25,9 @@ app.get('/', (req, res) => {
   });
 });
 
-app.listen(port, () => {
-  console.log(`API server listening at http://localhost:${port}`);
-});
+
+app.listen(process.env.PORT || 8080);
+
+// app.listen(port, () => {
+//   console.log(`API server listening at http://localhost:${port}`);
+// });
