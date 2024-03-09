@@ -3,4 +3,4 @@
   # If you have a build script defined in your package.json, use that command here.
   command = "npm run start" 
   # Specifies the directory that contains your static files for deployment.
-  publish = "start" # Adjust this path to where your build script outputs the files.
+  publish = "." # Adjust this path to where your build script outputs the files.
