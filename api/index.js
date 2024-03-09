@@ -8,12 +8,18 @@ const instagram = require('../services/instagram');
 const tiktok = require("../services/tiktok");
 const publerService = require("../services/publer");
 
+// test route
+router.get("/", (req, res) => {
+  res.send({"message": "Welcome to the API server"});
+});
 
 router.get("/download/", async (req, res) => {
+  
   const videoUrl = req.query.url;
   if (!videoUrl) {
     return res.status(400).send(videoUrl);
   }
+  // return res.send({"message": "Welcome to the API server"});
   let domain = Utils.detectUrl(videoUrl);
   switch (domain) {
     case 'facebook':

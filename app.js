@@ -3,7 +3,8 @@ const apiRoutes = require('./api');
 const bodyParser = require('body-parser');
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = 3000;
+// process.env.PORT ||
 
 // clear console
 console.clear();
@@ -26,8 +27,7 @@ app.get('/', (req, res) => {
 });
 
 
-app.listen(process.env.PORT || 8080);
 
-// app.listen(port, () => {
-//   console.log(`API server listening at http://localhost:${port}`);
-// });
+app.listen(port, () => {
+  console.log(`API server listening at http://localhost:${port}`);
+});
