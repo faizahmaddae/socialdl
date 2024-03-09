@@ -1,6 +1,8 @@
+# netlify.toml
 [build]
-  # Specifies the build command to generate your site's static files.
-  # If you have a build script defined in your package.json, use that command here.
-  command = "npm run start" 
-  # Specifies the directory that contains your static files for deployment.
-  publish = "." # Adjust this path to where your build script outputs the files.
+  # Example placeholder command; adjust according to your actual build process
+  command = "npm run build" # Update this if you have a specific build command for static assets
+  publish = "public" # Update this to the directory where your static files are located after build
+
+  # In case you decide to use Netlify Functions in the future
+  functions = "netlify/functions"
