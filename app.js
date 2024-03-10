@@ -10,7 +10,7 @@ console.clear();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true}));
-app.set('trust proxy', true);
+// app.set('trust proxy', true);
 app.use('/api', apiRoutes);
 
 
