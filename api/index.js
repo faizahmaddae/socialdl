@@ -17,9 +17,8 @@ router.get("/download/", async (req, res) => {
   
   const videoUrl = req.query.url;
   if (!videoUrl) {
-    return res.status(400).send(videoUrl);
+    return res.status(400).send({message: "URL is required"});
   }
-  // return res.send({"message": "Welcome to the API server"});
   let domain = Utils.detectUrl(videoUrl);
   switch (domain) {
     case 'facebook':
