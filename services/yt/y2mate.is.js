@@ -1,6 +1,6 @@
 const axios = require("axios");
-const ApiResponse = require('../ApiResponse');
-const Utils = require('../utils');
+const ApiResponse = require('../../ApiResponse');
+const Utils = require('../../utils');
 
 
 // const csrfToken = Utils.fetchCsrfToken("https://en.y2mate.is/");

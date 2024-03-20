@@ -1,6 +1,6 @@
 const axios = require("axios");
-const ApiResponse = require('../ApiResponse');
-const Utils = require('../utils');
+const ApiResponse = require('../../ApiResponse');
+const Utils = require('../../utils');
 const cheerio = require('cheerio');
 const htmlparser2 = require("htmlparser2");
 
@@ -59,6 +59,7 @@ async function downloadVideo(res, url) {
                     'thumbnail': img.attr('src'),
                     'download_url': downloadLink.attr('href'),
                     'is_video': isVideo,
+                    'source': 'snapinsta.app'
                 });
             }
 

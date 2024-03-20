@@ -1,6 +1,6 @@
 const axios = require("axios");
-const ApiResponse = require('../ApiResponse');
-const Utils = require('../utils');
+const ApiResponse = require('../../ApiResponse');
+const Utils = require('../../utils');
 const cheerio = require('cheerio');
 const htmlparser2 = require("htmlparser2");
 
@@ -54,8 +54,9 @@ async function downloadVideo(res, url) {
             const data = {
                 'title': tiktokMeta.title,
                 'thumbnail': tiktokMeta.thumbnail_url,
-                'type': tiktokMeta.embed_type,
                 'download_url': download_urls[0],
+                'is_video': tiktokMeta.embed_type === 'video' ? true : false,
+                'source': 'snaptik.app'
             };
 
             return ApiResponse.success(res, null, [data]);

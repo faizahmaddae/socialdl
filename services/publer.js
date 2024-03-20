@@ -31,8 +31,9 @@ async function downloadVideo(res, url) {
             result.push({
                 'title': item.name || item.caption,
                 'thumbnail': item.thumbnail ?? null,
-                'type': item.type ?? null,
                 'download_url': item.path ?? null,
+                'is_video': item.type === 'video' ? true : false,
+                'source': 'publer.io'
             });
         });
 
