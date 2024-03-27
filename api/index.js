@@ -32,8 +32,9 @@ router.get("/download/", async (req, res) => {
   let domain = Utils.detectUrl(videoUrl);
   switch (domain) {
     case "facebook":
-      return await snapsaveApp.downloadVideo(res, videoUrl);
-      // return await publerService.downloadVideo(res, videoUrl);
+      // todo: implement facebook download
+      // return await snapsaveApp.downloadVideo(res, videoUrl);
+      return await publerService.downloadVideo(res, videoUrl);
     case "tiktok":
       return await tiktok.downloadVideo(res, videoUrl);
     // return await publerService.downloadVideo(res, videoUrl);

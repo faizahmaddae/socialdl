@@ -55,7 +55,7 @@ async function downloadVideo(res, url) {
 
                 // push
                 data.push({
-                    "title": "Instagram Video",
+                    "title": `Instagram ${isVideo ? 'video': 'photo'}`,
                     'thumbnail': img.attr('src'),
                     'download_url': downloadLink.attr('href'),
                     'is_video': isVideo,

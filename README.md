@@ -18,3 +18,7 @@
     "node": "18.x"
   },
   `
+
+
+1. https://fastdl.app/
+2. https://ssstik.live/
