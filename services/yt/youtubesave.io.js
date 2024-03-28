@@ -32,7 +32,7 @@ async function downloadVideo(res, url) {
         if (response.status === 200) {
             const html = response.data.template;
         
-            const $ = cheerio.load(html.replace(/\\/g, '').replace(/\/\//g, '/'));
+            const $ = cheerio.load(html.replace(/\\/g, ''));
 
             const thumbnail = $('.container-fluit').find('img.img-fluid').attr('src');
             const title = $('.container-fluit').find('h5.card-title').text();
