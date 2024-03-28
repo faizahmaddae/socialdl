@@ -39,7 +39,7 @@ async function downloadVideo(res, url) {
             const html = Utils.eval(p[0], p[1], p[2], p[3], p[4], p[5]);
             // console.log(html);
             // first remove \\ and // from the html
-            const dom = htmlparser2.parseDocument(html.replace(/\\/g, '').replace(/\/\//g, '/'));
+            const dom = htmlparser2.parseDocument(html.replace(/\\/g, ''));
         
             const $ = cheerio.load(dom);
             // div.video-links

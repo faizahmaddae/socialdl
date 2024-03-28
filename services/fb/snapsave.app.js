@@ -40,7 +40,7 @@ async function downloadVideo(res, url) {
             const p = Utils.parseParameters(extractedData);
             const html = Utils.eval(p[0], p[1], p[2], p[3], p[4], p[5]);
             // console.log(html);
-            const dom = htmlparser2.parseDocument(html.replace(/\\/g, '').replace(/\/\//g, '/'));
+            const dom = htmlparser2.parseDocument(html.replace(/\\/g, ''));
             const $ = cheerio.load(dom);
 
             // do something with the data
