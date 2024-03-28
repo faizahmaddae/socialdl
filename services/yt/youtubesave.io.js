@@ -50,6 +50,7 @@ async function downloadVideo(res, url) {
 
                 data.push({ 
                     'title': label.replace(/[\n\s]+/g, '').trim(),
+                    'badge': label.replace(/[\n\s]+/g, '').trim(),
                     'thumbnail': thumbnail,
                     'download_url': link,
                     'is_video': true
