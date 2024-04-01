@@ -18,11 +18,15 @@ const snapsaveApp = require("../services/fb/snapsave.app.js");
 
 // all
 const publerService = require("../services/publer");
+const cobaltService = require("../services/cobalt");
+
+
 
 // test route
 router.get("/", (req, res) => {
   res.send({ message: "Welcome to the API server" });
 });
+
 
 router.get("/download/", async (req, res) => {
   const videoUrl = req.query.url;
@@ -33,17 +37,19 @@ router.get("/download/", async (req, res) => {
   switch (domain) {
     case "facebook":
       // todo: implement facebook download
-      // return await snapsaveApp.downloadVideo(res, videoUrl);
-      return await publerService.downloadVideo(res, videoUrl);
+      return await snapsaveApp.downloadVideo(res, videoUrl);
+      // return await publerService.downloadVideo(res, videoUrl);
     case "tiktok":
       return await tiktok.downloadVideo(res, videoUrl);
     // return await publerService.downloadVideo(res, videoUrl);
     case "instagram":
-      return await instagram.downloadVideo(res, videoUrl);
+      // return await instagram.downloadVideo(res, videoUrl);
+      return await cobaltService.downloadFromInsta(res, videoUrl);
     // return await publerService.downloadVideo(res, videoUrl);
     case "youtube":
       // return await publerService.downloadVideo(res, videoUrl);;
-      return await youtubesave_io.downloadVideo(res, videoUrl);
+      // return await youtubesave_io.downloadVideo(res, videoUrl);
+      return await cobaltService.downloadFromYoutube(res, videoUrl);
     case "twitter":
       return await publerService.downloadVideo(res, videoUrl);
     case "twitch":
@@ -54,6 +60,38 @@ router.get("/download/", async (req, res) => {
       return res.status(400).send("URL is not supported");
   }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // youtube
 router.get("/youtube/", async (req, res) => {

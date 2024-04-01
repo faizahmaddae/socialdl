@@ -4,6 +4,20 @@ const e = require('express');
 
 class Utils {
 
+
+  static async fetchContentType(url) {
+    return await axios.head(url)
+      .then(response => {
+        // Return the content type from the response headers
+        return response.headers['content-type'];
+      })
+      .catch(error => {
+        // Log the error and return a meaningful message or null
+        console.error('Error fetching URL:', error.message);
+        return null;
+      });
+  }
+
   // detectUrl
   static detectUrl(url) {
 

@@ -43,13 +43,19 @@ async function downloadVideo(res, url) {
             const dom = htmlparser2.parseDocument(html.replace(/\\/g, ''));
             const $ = cheerio.load(dom);
 
-            // do something with the data
+            // find div.download-box
+            const downloadBox = $('div.download-box');
 
-            // get back the html
+            // find img
+            const thumbnail = $(downloadBox).find('img').attr('src');
+
+            // .video-quality
+            const videoQuality = $(downloadBox).find('.video-quality');
+
             
 
     
-            return ApiResponse.success(res, null, [$.html()]);
+            return ApiResponse.success(res, null, {thumbnail, 'videoQuality':videoQuality.length});
         }
     } catch (error) {
         console.error("Failed to retrieve data:", error);
