@@ -46,7 +46,7 @@ class Utils {
     const fbRegex = /(?:https?:\/\/)?(?:www\.|(?:[a-zA-Z0-9-]+\.)*)(facebook|fb)\.(com|me|watch)\//gm;
     const instaRegex = /(?:https?:\/\/)?(?:www\.|(?:[a-zA-Z0-9-]+\.)*)(instagram)\.(com)\//gm;
     const tiktokRegex = /(?:https?:\/\/)?(?:www\.|(?:[a-zA-Z0-9-]+\.)*)(tiktok)\.(com)\//gm;
-    const youtubeRegex = /(?:https?:\/\/)?(?:www\.|(?:[a-zA-Z0-9-]+\.)*)(youtube)\.(com)\//gm;
+    const youtubeRegex = /(?:https?:\/\/)?(?:www\.|(?:[a-zA-Z0-9-]+\.)*)(youtube|youtu)\.(com|be)\//gm;
     const twitterRegex = /(?:https?:\/\/)?(?:www\.|(?:[a-zA-Z0-9-]+\.)*)(twitter|x)\.(com)\//gm;
     const twitchRegex = /(?:https?:\/\/)?(?:www\.|(?:[a-zA-Z0-9-]+\.)*)(twitch)\.(tv)\//gm;
     const linkedinRegex = /(?:https?:\/\/)?(?:www\.|(?:[a-zA-Z0-9-]+\.)*)(linkedin)\.(com)\//gm;
