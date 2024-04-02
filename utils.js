@@ -18,6 +18,19 @@ class Utils {
       });
   }
 
+  // use try catch block to handle errors
+  static async fetchContentSize(url) {
+    try {
+      const response = await axios.head(url);
+      // Return the content length from the response headers
+      return response.headers['content-length'];
+    } catch (error) {
+      // Log the error and return a meaningful message or null
+      console.error('Error fetching URL:', error.message);
+      return null;
+    }
+  }
+
   // detectUrl
   static detectUrl(url) {
 
