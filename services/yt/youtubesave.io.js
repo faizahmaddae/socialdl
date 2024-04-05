@@ -58,7 +58,7 @@ async function downloadVideo(res, url) {
             }
             return ApiResponse.success(res, null, data);
             
-        }else{
+        } else {
             return ApiResponse.notFound(res, "Failed to retrieve data");
         }
     } catch (error) {

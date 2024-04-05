@@ -40,12 +40,12 @@ async function downloadVideo(res, url) {
             // console.log(html);
             // first remove \\ and // from the html
             const dom = htmlparser2.parseDocument(html.replace(/\\/g, ''));
-        
+
             const $ = cheerio.load(dom);
             // div.video-links
             const video_links = $('div.video-links').find('a');
             const tiktokMeta = await getThumbnail(url);
-            
+
             const download_urls = [];
             video_links.each((i, link) => {
                 download_urls.push($(link).attr('href'));
@@ -60,6 +60,8 @@ async function downloadVideo(res, url) {
             };
 
             return ApiResponse.success(res, null, [data]);
+        } else {
+            return ApiResponse.internalServerError(res, "Failed to retrieve data");
         }
     } catch (error) {
         console.error("Failed to retrieve data:", error);

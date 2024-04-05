@@ -14,7 +14,7 @@ const instagram = require("../services/insta/instagram");
 const tiktok = require("../services/tiktok/tiktok");
 
 // facebook
-const snapsaveApp = require("../services/fb/snapsave.app.js");
+const snapvidService = require("../services/fb/snapvid");
 
 // all
 const publerService = require("../services/publer");
@@ -36,9 +36,7 @@ router.get("/download/", async (req, res) => {
   let domain = Utils.detectUrl(videoUrl);
   switch (domain) {
     case "facebook":
-      // todo: implement facebook download
-      return await snapsaveApp.downloadVideo(res, videoUrl);
-      // return await publerService.downloadVideo(res, videoUrl);
+      return await snapvidService.downloadVideo(res, videoUrl);
     case "tiktok":
       return await tiktok.downloadVideo(res, videoUrl);
     // return await publerService.downloadVideo(res, videoUrl);

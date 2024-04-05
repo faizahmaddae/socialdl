@@ -165,16 +165,51 @@ class Utils {
     }
   }
 
-  static async fetchCsrfToken(url, selector = 'meta[name="csrf-token"]', attribute = 'content') {
+  static async fetchCsrfTokenWithCookies(url, selector = 'meta[name="csrf-token"]', attribute = 'content') {
+    const headers = {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+    };
+
     try {
       // Make an HTTP GET request to the webpage
-      const response = await axios.get(url);
+      const response = await axios.get(url, { headers });
       const html = response.data;
 
       const serverTime = response.headers['date'];
       const timestamp = new Date(serverTime).getTime();
 
-      console.log('Server Time:', timestamp);
+      // console.log('Server Time:', timestamp);
+
+      // Use cheerio to parse the HTML
+      const $ = cheerio.load(html);
+
+      // Extract the CSRF token from meta tags
+      // Adjust the selector as needed based on the meta tag's name or property
+      const csrfToken = $(selector).attr(attribute);
+      const cookies = response.headers['set-cookie'];
+
+      return { 'csrfToken': csrfToken, 'cookies': cookies };
+
+    } catch (error) {
+      console.error('Error fetching CSRF Token:', error);
+      return null;
+    }
+  }
+
+  static async fetchCsrfToken(url, selector = 'meta[name="csrf-token"]', attribute = 'content') {
+    const headers = {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+    };
+
+    try {
+      // Make an HTTP GET request to the webpage
+      const response = await axios.get(url, { headers });
+      const html = response.data;
+
+      const serverTime = response.headers['date'];
+      const timestamp = new Date(serverTime).getTime();
+
+      // console.log('Server Time:', timestamp);
 
       // Use cheerio to parse the HTML
       const $ = cheerio.load(html);
@@ -184,7 +219,7 @@ class Utils {
       const csrfToken = $(selector).attr(attribute);
 
       if (csrfToken) {
-        console.log('CSRF Token:', csrfToken);
+        
         return csrfToken;
       } else {
         console.error('CSRF Token not found.');
@@ -192,6 +227,7 @@ class Utils {
       }
     } catch (error) {
       console.error('Error fetching CSRF Token:', error);
+      return null;
     }
   }
 
