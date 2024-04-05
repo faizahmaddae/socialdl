@@ -7,7 +7,6 @@ const cheerio = require('cheerio');
 const htmlparser2 = require("htmlparser2");
 const qs = require('qs');
 
-
 async function downloadVideo(res, url) {
 
     const baseUrl = 'https://snapvid.net/api/ajaxSearch';
@@ -32,9 +31,6 @@ async function downloadVideo(res, url) {
         'Sec-Ch-Ua': '"Google Chrome";v="123", "Not:A-Brand";v="8", "Chromium";v="123"',
         'Sec-Ch-Ua-Mobile': '?0',
         'Sec-Ch-Ua-Platform': '"macOS"',
-        'Sec-Fetch-Dest': 'empty',
-        'Sec-Fetch-Mode': 'cors',
-        'Sec-Fetch-Site': 'same-origin',
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
         'X-Requested-With': 'XMLHttpRequest',
     };
@@ -106,7 +102,6 @@ async function downloadVideo(res, url) {
         return ApiResponse.internalServerError(res, "Failed to retrieve data");
     }
 }
-
 
 
 module.exports = {
