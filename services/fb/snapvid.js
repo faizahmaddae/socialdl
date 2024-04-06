@@ -63,10 +63,10 @@ async function downloadVideo(res, url) {
                 const row = $(el);
                 const title = row.find('td').first().text();
                 var link = row.find('td a').attr('href');
-                if(link == null){
+                if (link == null) {
                     link = row.find('td button').attr('data-videourl');
                 }
-                if(title == null || link == null){
+                if (title == null || link == null) {
                     return;
                 }
                 data.push({
@@ -89,10 +89,10 @@ async function downloadVideo(res, url) {
             // check data length
             if (data.length > 0) {
                 return ApiResponse.success(res, null, [data[0]]);
-            }else{
+            } else {
                 return ApiResponse.notFound(res, "No data found");
             }
-    
+
         } else {
             return ApiResponse.internalServerError(res, "Failed to retrieve data");
         }

@@ -24,7 +24,6 @@ function getYouTubeThumbnailUrl(youtubeUrl) {
       const videoId = videoIdMatch[1];
       return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
     } else {
-      // Return a message or null if the video ID could not be extracted
       return null;
     }
   }
@@ -55,7 +54,7 @@ async function downloadFromYoutube(res, url) {
             data.push({
                 'title': null,
                 'badge': null,
-                'thumbnail': thumbnail,
+                'thumbnail': thumbnail ?? null,
                 'download_url': response.data.url,
                 'is_video': true,
             });
@@ -67,58 +66,69 @@ async function downloadFromYoutube(res, url) {
 }
 
 
-async function downloadFromInsta(res, url) {
+async function download(res, url) {
 
-    const params = {
-        'url': url,
-    };
+    const params = { 'url': url };
     let data = [];
+
     try {
         const response = await axios.post(baseUrl, params, { headers });
+
+        // return ApiResponse.success(res, null, response.data);
         if (response.status === 200) {
-
-            if (response.data.status === 'redirect') {
-
-                const type = await Utils.fetchContentType(response.data.url);
-                
-                data.push({
-                    'title': null,
-                    'badge': null,
-                    'thumbnail': type.includes('video') ? null : response.data.thumb,
-                    'download_url': response.data.url,
-                    'is_video': type.includes('video') ? true : false,
-                });
-
-            } else if (response.data.status === 'picker') {
-
+            
+            if(response.data.status === 'picker') {
                 response.data.picker.forEach((item) => {
                     data.push({
                         'title': null,
                         'badge': null,
-                        'thumbnail': item.thumb,
+                        'thumbnail': item.thumb ?? item.url,
                         'download_url': item.url,
-                        'is_video': item.type == 'video' ? true : false,
+                        'is_video': item.type === 'video' ? true : false,
                     });
+                });
+                return ApiResponse.success(res, null, data);
+
+            } else if (response.data.status === 'redirect') {
+                const type = await Utils.fetchContentType(response.data.url);
+                const isVideo = type.includes('video') ? true : false;
+                
+                data.push({
+                    'title': null,
+                    'badge': null,
+                    'thumbnail': isVideo ? null : response.data.url,
+                    'download_url': response.data.url,
+                    'is_video': isVideo,
+                });
+
+            }else if (response.data.status === 'stream') {
+                
+                data.push({
+                    'title': null,
+                    'badge': null,
+                    'thumbnail': null,
+                    'download_url': response.data.url,
+                    'is_video': true,
                 });
 
             } else {
-
-                return ApiResponse.notFound(res, 'not found');
+                return ApiResponse.notFound(res);
             }
 
             return ApiResponse.success(res, null, data);
 
         } else {
-
-            return ApiResponse.notFound(res, 'not found');
+            return ApiResponse.notFound(res);
         }
+
     } catch (error) {
-        return ApiResponse.notFound(res, 'not found');
+        // console.log(error.toJSON());
+        return ApiResponse.internalServerError(res, 'Failed to download');
     }
 }
 
 
 module.exports = {
     downloadFromYoutube,
-    downloadFromInsta,
+    download,
 };

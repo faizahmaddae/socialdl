@@ -31,9 +31,10 @@ router.get("/", (req, res) => {
 router.get("/download/", async (req, res) => {
   const videoUrl = req.query.url;
   if (!videoUrl) {
-    return res.status(400).send({ message: "URL is required" });
+    return res.status(400).send({ message: "url_is_required" });
   }
   let domain = Utils.detectUrl(videoUrl);
+  console.log("domain", domain);
   switch (domain) {
     case "facebook":
       return await snapvidService.downloadVideo(res, videoUrl);
@@ -42,20 +43,22 @@ router.get("/download/", async (req, res) => {
     // return await publerService.downloadVideo(res, videoUrl);
     case "instagram":
       // return await instagram.downloadVideo(res, videoUrl);
-      return await cobaltService.downloadFromInsta(res, videoUrl);
+      return await cobaltService.download(res, videoUrl);
     // return await publerService.downloadVideo(res, videoUrl);
     case "youtube":
       // return await publerService.downloadVideo(res, videoUrl);;
       // return await youtubesave_io.downloadVideo(res, videoUrl);
       return await cobaltService.downloadFromYoutube(res, videoUrl);
     case "twitter":
-      return await publerService.downloadVideo(res, videoUrl);
+      return await cobaltService.download(res, videoUrl);
+      // return await publerService.downloadVideo(res, videoUrl);
     case "twitch":
-      return await publerService.downloadVideo(res, videoUrl);
+      return await cobaltService.download(res, videoUrl);
+      // return await publerService.downloadVideo(res, videoUrl);
     case "linkedin":
       return await publerService.downloadVideo(res, videoUrl);
     default:
-      return res.status(400).send("URL is not supported");
+      return res.status(400).send("url_not_supported");
   }
 });
 
